@@ -9,10 +9,10 @@ services:
     ports:
       - "80:80"
       - "443:443"
-  bahmni-config:
-    image: '${CONFIG_IMAGE_NAME:?}:${CONFIG_IMAGE_TAG:?}'
-    volumes:
-      - '${CONFIG_VOLUME:?}:/usr/local/bahmni_config'
+  # bahmni-config:
+  #   image: '${CONFIG_IMAGE_NAME:?}:${CONFIG_IMAGE_TAG:?}'
+  #   volumes:
+  #     - '${CONFIG_VOLUME:?}:/usr/local/bahmni_config'
 
   openmrs:
     profiles: ['default', 'openmrs']
@@ -69,7 +69,7 @@ services:
       - '3306:3306'
     volumes:
       - 'openmrsdbdata:/var/lib/mysql'
-     # - './openmrsdump/:/docker-entrypoint-initdb.d/'
+      - '/etc/bahmni-upgrade/openmrsdump/:/docker-entrypoint-initdb.d/'
 
   bahmni-web:
     image: bahmni/bahmni-web:${BAHMNI_WEB_IMAGE_TAG:?}
