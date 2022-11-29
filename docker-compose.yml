@@ -50,8 +50,8 @@ services:
     volumes:
       # - 'openmrs-data:/usr/local/tomcat/.OpenMRS/modules'
       - '${CONFIG_VOLUME:?}:/etc/bahmni_config/:ro'
-      # - 'bahmni-patient-images:/home/bahmni/patient_images'
-      # - 'bahmni-document-images:/home/bahmni/document_images'
+      - 'bahmni-patient-images:/home/bahmni/patient_images'
+      - 'bahmni-document-images:/home/bahmni/document_images'
     depends_on:
       - openmrsdb
 
@@ -89,7 +89,7 @@ services:
       OPENMRS_DB_PASSWORD: ${OPENMRS_DB_PASSWORD:?}
       OPENMRS_HOST: ${OPENMRS_HOST:?}
       OPENMRS_PORT: ${OPENMRS_PORT:?}
-      OPENELIS_DB_SERVER: openelisdb
+      OPENELIS_DB_SERVER: ${OPENELIS_DB_SERVER:?}
       REPORTS_DB_SERVER: reportsdb
       REPORTS_DB_NAME: ${REPORTS_DB_NAME:?}
       REPORTS_DB_USERNAME: ${REPORTS_DB_USERNAME:?}
