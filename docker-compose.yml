@@ -2,6 +2,7 @@ version: "3.7"
 services:
   proxy:
     image: bahmniindiadistro/proxy:${PROXY_IMAGE_TAG:?}
+    restart: unless-stopped
     volumes:
     #   - ${CERTIFICATE_PATH}:/etc/tls
     - "bahmni-patient-images:/home/bahmni/patient_images"
@@ -17,6 +18,7 @@ services:
   openmrs:
     profiles: ['default', 'openmrs']
     image: bahmniindiadistro/openmrs:${OPENMRS_IMAGE_TAG}
+    restart: unless-stopped
     environment:
       DB_DATABASE: ${OPENMRS_DB_NAME:?}
       DB_HOST: ${OPENMRS_DB_HOST:?}
@@ -57,7 +59,7 @@ services:
 
   openmrsdb:
     image: ${OPENMRS_DB_IMAGE_NAME:?}
-    restart: always
+    restart: unless-stopped
     profiles: ["default","openmrs"]
     command: --character-set-server=utf8 --collation-server=utf8_general_ci
     environment:
@@ -73,6 +75,7 @@ services:
 
   bahmni-web:
     image: bahmni/bahmni-web:${BAHMNI_WEB_IMAGE_TAG:?}
+    restart: unless-stopped
     profiles: ["default","openmrs"]
     volumes:
       #- "${BAHMNI_APPS_PATH:?}/ui/app/:/usr/local/apache2/htdocs/bahmni"
@@ -81,6 +84,7 @@ services:
 
   reports:
     image: bahmni/reports:${REPORTS_IMAGE_TAG:?}
+    restart: unless-stopped
     profiles: [ "default","reports" ]
     environment:
       OPENMRS_DB_HOST: ${OPENMRS_DB_HOST:?}
@@ -106,6 +110,7 @@ services:
 
   reportsdb:
     image: mysql:5.6
+    restart: unless-stopped
     profiles: ["default","reports"]
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?}
@@ -115,6 +120,7 @@ services:
 
   patient-documents:
      image: 'bahmni/patient-documents:${PATIENT_DOCUMENTS_TAG:?}'
+     restart: unless-stopped
      ports:
        - '8099:80'
      profiles: ["default","openmrs"]
@@ -125,12 +131,14 @@ services:
 
   appointments:
     image: bahmni/appointments:${APPOINTMENTS_IMAGE_TAG:?}
+    restart: unless-stopped
     profiles: [ "default","appointments" ]
 #    volumes:
 #      - "${APPOINTMENTS_PATH:?}/dist/:/usr/local/apache2/htdocs/appointments"
 
   implementer-interface:
     image: bahmni/implementer-interface:${IMPLEMENTER_INTERFACE_IMAGE_TAG:?}
+    restart: unless-stopped
     profiles: ["default","implementer-interface"]
     #volumes:
     #  - "${IMPLEMENTER_INTERFACE_CODE_PATH:?}/dist:/usr/local/apache2/htdocs/implementer_interface"
@@ -140,6 +148,7 @@ services:
   db:
     container_name: db
     image: postgres:${POSTGRES_IMAGE_TAG:?}
+    restart: unless-stopped
     profiles: ["default","abdm"]
     environment:
       - POSTGRES_USER=${HIP_DB_USER:?}
@@ -157,6 +166,7 @@ services:
         - "5672:5672"
   otp:
       image: bahmniindiadistro/otp-service:${OTP_SERVICE_IMAGE_TAG:?}
+      restart: unless-stopped
       profiles: ["default","abdm"]
       container_name: otp
       depends_on:
@@ -166,6 +176,7 @@ services:
 
   hiu-db-setup:
       image: bahmniindiadistro/hiu-db:${HIU_DB_INITIALIZER_IMAGE_TAG:?}
+      restart: unless-stopped
       profiles: ["default","abdm"]
       container_name: hiu-db-setup
       environment:
@@ -174,6 +185,7 @@ services:
   hip:
     container_name: hip
     image: bahmniindiadistro/hip:${HIP_IMAGE_TAG:?}
+    restart: unless-stopped
     profiles: ["default","abdm"]
     ports:
       - "8000:80"
@@ -203,6 +215,7 @@ services:
 
   hiu:
     image: bahmniindiadistro/hiu:${HIU_IMAGE_TAG:?}
+    restart: unless-stopped
     profiles: ["default","abdm"]
     container_name: hiu
     volumes:
@@ -245,6 +258,7 @@ services:
 
   hiu-ui:
     image: bahmniindiadistro/hiu-ui:${HIU_UI_IMAGE_TAG:?}
+    restart: unless-stopped
     profiles: ["default","abdm"]
     container_name: hiu-ui
     environment:
@@ -257,6 +271,7 @@ services:
 
   abha-verification:
     image: bahmniindiadistro/abha-verification:${ABHA_VERIFICATION_IMAGE_TAG:?}
+    restart: unless-stopped
     profiles: ["default","abdm"]
 
 volumes:
