@@ -174,7 +174,7 @@ services:
       depends_on:
         - db
       environment:
-        whitelisted:numbers: "+918072581464"
+        whitelisted:numbers: ${OTP_WHITELIST_NUMBERS}
 
   hiu-db-setup:
       image: bahmniindiadistro/hiu-db:${HIU_DB_INITIALIZER_IMAGE_TAG:?}
