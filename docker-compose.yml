@@ -53,6 +53,7 @@ services:
       - '8080:8080'
     volumes:
       # - 'openmrs-data:/openmrs/data/modules'
+      - '${ABDM_CONFIG_PROPERTIES_PATH}/abdm_config.properties:/openmrs/data/abdm_config.properties'
       - '${CONFIG_VOLUME:?}:/etc/bahmni_config/:ro'
       - 'bahmni-patient-images:/home/bahmni/patient_images'
       - 'bahmni-document-images:/home/bahmni/document_images'
