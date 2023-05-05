@@ -49,6 +49,7 @@ services:
       #HIP-OMOD Variables. Refer here https://github.com/BahmniIndiaDistro/openmrs-module-hip/tree/master#docker-setup
       LOCATION: ${LOCATION:?}
       PHONE_NUMBER: ${PHONE_NUMBER:?}
+      LAB_ORDER_TYPE_ID: "3"
     ports:
       - '8080:8080'
     volumes:
@@ -176,6 +177,9 @@ services:
         - db
       environment:
         whitelisted:numbers: ${OTP_WHITELIST_NUMBERS}
+        D7SmsService:Token: ${D7_SMS_API_TOKEN}
+        D7SmsService:Originator: ${D7_SMS_ORIGINATOR}
+        SmsService:SmsSuffix: "SlNT"
 
   hiu-db-setup:
       image: bahmniindiadistro/hiu-db:${HIU_DB_INITIALIZER_IMAGE_TAG:?}
@@ -205,6 +209,7 @@ services:
       OpenMrs:phoneNumber: ${PHONE_NUMBER:?}
       Gateway:cmSuffix: ${ABDM_CONSENT_MANAGEMENT_SUFFIX:?}
       OtpService:BaseUrl: ${HIP_OTP_SERVICE_URL:?}
+      OtpService:SenderSystemName: ${OTP_SERVICE_SENDER_NAME}
       hip:url: ${HIP_URL:?}
       HEALTH_CHECK_DURATION: ${HIP_OPENMRS_HEALTH_CHECK_DURATION:?}
       Cors:allowedOrigins: ${HIP_CORS_ALLOWED_ORIGIN:?}
