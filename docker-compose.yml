@@ -58,6 +58,8 @@ services:
       - '${CONFIG_VOLUME:?}:/etc/bahmni_config/:ro'
       - 'bahmni-patient-images:/home/bahmni/patient_images'
       - 'bahmni-document-images:/home/bahmni/document_images'
+      - 'bahmni-clinical-forms:/home/bahmni/clinical_forms'
+      - 'configuration_checksums:/openmrs/data/configuration_checksums'
     depends_on:
       - openmrsdb
 
@@ -76,6 +78,7 @@ services:
     volumes:
       - 'openmrsdbdata:/var/lib/mysql'
       - '/etc/bahmni-upgrade/openmrsdump/:/docker-entrypoint-initdb.d/'
+      - 'configuration_checksums:/configuration_checksums'
 
   bahmni-web:
     image: bahmni/bahmni-web:${BAHMNI_WEB_IMAGE_TAG:?}
@@ -304,3 +307,5 @@ volumes:
   postgresql:
   postgresql_data:
   bahmni-config:
+  bahmni-clinical-forms:
+  configuration_checksums:
