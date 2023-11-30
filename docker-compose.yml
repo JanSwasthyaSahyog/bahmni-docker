@@ -3,6 +3,8 @@ services:
   proxy:
     image: bahmniindiadistro/proxy:${PROXY_IMAGE_TAG:?}
     restart: unless-stopped
+    environment:
+      TZ: ${TZ}
     volumes:
     #   - ${CERTIFICATE_PATH}:/etc/tls
     - "bahmni-patient-images:/home/bahmni/patient_images"
@@ -10,6 +12,7 @@ services:
     ports:
       - "80:80"
       - "443:443"
+
   # bahmni-config:
   #   image: '${CONFIG_IMAGE_NAME:?}:${CONFIG_IMAGE_TAG:?}'
   #   volumes:
@@ -20,6 +23,7 @@ services:
     image: bahmniindiadistro/openmrs:${OPENMRS_IMAGE_TAG}
     restart: unless-stopped
     environment:
+      TZ: ${TZ}
       OMRS_DB_NAME: ${OPENMRS_DB_NAME:?}
       OMRS_DB_HOSTNAME: ${OPENMRS_DB_HOST:?}
       OMRS_DB_USERNAME: ${OPENMRS_DB_USERNAME:?}
@@ -71,6 +75,7 @@ services:
     profiles: ["default","openmrs"]
     command: --character-set-server=utf8 --collation-server=utf8_general_ci
     environment:
+      TZ: ${TZ}
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?}
       MYSQL_DATABASE: ${OPENMRS_DB_NAME:?}
       MYSQL_USER: ${OPENMRS_DB_USERNAME:?}
@@ -86,6 +91,8 @@ services:
     image: bahmni/bahmni-web:${BAHMNI_WEB_IMAGE_TAG:?}
     restart: unless-stopped
     profiles: ["default","openmrs"]
+    environment:
+      TZ: ${TZ}
     volumes:
       #- "${BAHMNI_APPS_PATH:?}/ui/app/:/usr/local/apache2/htdocs/bahmni"
       #- "${BAHMNI_APPS_PATH:?}/ui/node_modules/@bower_components/:/usr/local/apache2/htdocs/bahmni/components"
@@ -96,6 +103,7 @@ services:
     restart: unless-stopped
     profiles: [ "default","reports" ]
     environment:
+      TZ: ${TZ}
       OPENMRS_DB_HOST: ${OPENMRS_DB_HOST:?}
       OPENMRS_DB_NAME: ${OPENMRS_DB_NAME:?}
       OPENMRS_DB_USERNAME: ${OPENMRS_DB_USERNAME:?}
@@ -122,6 +130,7 @@ services:
     restart: unless-stopped
     profiles: ["default","reports"]
     environment:
+      TZ: ${TZ}
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?}
       MYSQL_DATABASE: ${REPORTS_DB_NAME:?}
       MYSQL_USER: ${REPORTS_DB_USERNAME:?}
@@ -136,12 +145,15 @@ services:
      volumes:
        - 'bahmni-document-images:/usr/share/nginx/html/document_images'
      environment:
+       - TZ=${TZ:?}
        - OPENMRS_HOST=${OPENMRS_HOST:?}
 
   appointments:
     image: bahmni/appointments:${APPOINTMENTS_IMAGE_TAG:?}
     restart: unless-stopped
     profiles: [ "default","appointments" ]
+    environment:
+      TZ: ${TZ}
 #    volumes:
 #      - "${APPOINTMENTS_PATH:?}/dist/:/usr/local/apache2/htdocs/appointments"
 
@@ -149,6 +161,8 @@ services:
     image: bahmni/implementer-interface:${IMPLEMENTER_INTERFACE_IMAGE_TAG:?}
     restart: unless-stopped
     profiles: ["default","implementer-interface"]
+    environment:
+      TZ: ${TZ}
     #volumes:
     #  - "${IMPLEMENTER_INTERFACE_CODE_PATH:?}/dist:/usr/local/apache2/htdocs/implementer_interface"
     depends_on:
@@ -160,6 +174,7 @@ services:
     restart: unless-stopped
     profiles: ["default","abdm"]
     environment:
+      - TZ=${TZ:?}
       - POSTGRES_USER=${HIP_DB_USER:?}
       - POSTGRES_PASSWORD=${HIP_DB_PASSWORD:?}
     ports:
@@ -171,6 +186,8 @@ services:
       image: rabbitmq:${RABBITMQ_IMAGE_TAG:?}
       profiles: ["default","abdm"]
       container_name: rabbitmq
+      environment:
+        TZ: ${TZ}
       ports:
         - "5672:5672"
   otp:
@@ -181,6 +198,7 @@ services:
       depends_on:
         - db
       environment:
+        TZ: ${TZ}
         whitelisted:numbers: ${OTP_WHITELIST_NUMBERS}
         D7SmsService:Token: ${D7_SMS_API_TOKEN}
         D7SmsService:Originator: ${D7_SMS_ORIGINATOR}
@@ -192,6 +210,7 @@ services:
       profiles: ["default","abdm"]
       container_name: hiu-db-setup
       environment:
+        - TZ=${TZ}
         - 'JAVA_TOOL_OPTIONS=-Djdbc.url=${HIU_DB_URL:?} -Djdbc.username=${HIU_DB_USER:?} -Djdbc.password=${HIU_DB_PASSWORD:?} -Djdbc.database=${HIU_DB_NAME:?}'
 
   hip:
@@ -206,6 +225,7 @@ services:
       - otp
       - rabbitmq
     environment:
+      TZ: ${TZ}
       Gateway:clientSecret: ${ABDM_GATEWAY_CLIENT_SECRET:?}
       Gateway:clientId: ${ABDM_GATEWAY_CLIENT_ID:?}
       Gateway:url: ${ABDM_GATEWAY_URL:?}
@@ -230,6 +250,7 @@ services:
     profiles: ["default","abdm"]
     container_name: hiu
     environment:
+      TZ: ${TZ}
       HIU_ID: ${HIU_ID:?}
       HIU_NAME: ${HIU_NAME:?}
       IDENTITY_JWK_URL: ${ABDM_IDENTITY_JWK_URL:?}
@@ -271,6 +292,7 @@ services:
     profiles: ["default","abdm"]
     container_name: hiu-ui
     environment:
+      TZ: ${TZ}
       BACKEND_BASE_URL: ${HIU_BACKEND_BASE_URL:?}
       BASE_NAME: ${HIU_UI_BASE_NAME:?}
       TIMEZONE_OFFSET: ${TIMEZONE_OFFSET:?}
@@ -283,6 +305,7 @@ services:
     image: bahmniindiadistro/hip-atomfeed:${HIP_ATOMFEED_IMAGE_TAG:?}
     profiles: ["default","abdm"]
     environment:
+      TZ: ${TZ}
       DATABASE_URL: ${HIP_ATOMFEED_DB_URL:?}
       DATABASE_NAME: ${HIP_ATOMFEED_DB_NAME:?}
       DATABASE_USERNAME: ${HIP_DB_USER:?}
@@ -300,6 +323,8 @@ services:
     image: bahmniindiadistro/abha-verification:${ABHA_VERIFICATION_IMAGE_TAG:?}
     restart: unless-stopped
     profiles: ["default","abdm"]
+    environment:
+      TZ: ${TZ}
 
 volumes:
   openmrs-data:
