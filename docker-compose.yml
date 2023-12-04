@@ -203,6 +203,7 @@ services:
         D7SmsService:Token: ${D7_SMS_API_TOKEN}
         D7SmsService:Originator: ${D7_SMS_ORIGINATOR}
         SmsService:SmsSuffix: "SlNT"
+        ConnectionStrings:DefaultConnection: Host=${OTP_DB_HOST:?};Port=${OTP_DB_PORT:?};Username=${OTP_DB_USER:?};Password=${OTP_DB_PASSWORD:?};Database=${OTP_DB_NAME:?};
 
   hiu-db-setup:
       image: bahmniindiadistro/hiu-db:${HIU_DB_INITIALIZER_IMAGE_TAG:?}
