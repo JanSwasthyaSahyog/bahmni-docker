@@ -5,9 +5,8 @@ services:
     restart: unless-stopped
     environment:
       TZ: ${TZ}
-    volumes:
+    #volumes:
     #   - ${CERTIFICATE_PATH}:/etc/tls
-    - "bahmni-patient-images:/home/bahmni/patient_images"
 
     ports:
       - "80:80"
@@ -66,6 +65,7 @@ services:
       - 'bahmni-document-images:/home/bahmni/document_images'
       - 'bahmni-clinical-forms:/home/bahmni/clinical_forms'
       - 'configuration_checksums:/openmrs/data/configuration_checksums'
+      - "bahmni-lab-results:/home/bahmni/uploaded_results"
     depends_on:
       - openmrsdb
 
@@ -120,6 +120,7 @@ services:
       ODOO_DB_PASSWORD: ${ODOO_DB_PASSWORD:?}
     volumes:
       - '${CONFIG_VOLUME:?}:/etc/bahmni_config/:ro'
+      - "bahmni-queued-reports:/home/bahmni/reports"
     depends_on:
       - reportsdb
       - openmrsdb
@@ -337,3 +338,5 @@ volumes:
   bahmni-config:
   bahmni-clinical-forms:
   configuration_checksums:
+  bahmni-queued-reports:
+  bahmni-lab-results:
