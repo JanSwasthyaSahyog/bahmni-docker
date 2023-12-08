@@ -364,7 +364,7 @@ services:
       TZ: ${TZ}
 
   cadvisor:
-    image: gcr.io/cadvisor/cadvisor:latest
+    image: gcr.io/cadvisor/cadvisor:${CADVISOR_IMAGE_TAG:?}
     container_name: cadvisor
     restart: unless-stopped
     profiles: ["monitoring"]
@@ -378,7 +378,7 @@ services:
       - /var/lib/docker/:/var/lib/docker:ro
 
   node-exporter:
-    image: prom/node-exporter:latest
+    image: prom/node-exporter:${NODE_EXPORTER_IMAGE_TAG:?}
     container_name: node-exporter
     restart: unless-stopped
     profiles: ["monitoring"]
