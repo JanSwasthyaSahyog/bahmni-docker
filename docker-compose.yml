@@ -1,10 +1,28 @@
 version: "3.7"
+
+x-default-logging: &default
+  {}
+
+x-loki-logging: &loki
+  driver: loki
+  options:
+    loki-url: ${LOKI_URL:?}
+    mode: non-blocking
+    max-buffer-size: 4m
+    loki-retries: "3"
+
+x-log-config: &log-config
+  # update this value to *loki if needed to see logs in grafana dashboard.
+  <<: *default
+
+
 services:
   proxy:
     image: bahmniindiadistro/proxy:${PROXY_IMAGE_TAG:?}
     restart: unless-stopped
     environment:
       TZ: ${TZ}
+    logging: *log-config
     #volumes:
     #   - ${CERTIFICATE_PATH}:/etc/tls
 
@@ -57,6 +75,7 @@ services:
       LAB_ORDER_TYPE_ID: "3"
     ports:
       - '8080:8080'
+    logging: *log-config
     volumes:
       # - 'openmrs-data:/openmrs/data/modules'
       - '${ABDM_CONFIG_PROPERTIES_PATH}/abdm_config.properties:/openmrs/data/abdm_config.properties'
@@ -82,6 +101,7 @@ services:
       MYSQL_PASSWORD: ${OPENMRS_DB_PASSWORD:?}
     ports:
       - '3306:3306'
+    logging: *log-config
     volumes:
       - 'openmrsdbdata:/var/lib/mysql'
       - '/etc/bahmni-upgrade/openmrsdump/:/docker-entrypoint-initdb.d/'
@@ -93,6 +113,7 @@ services:
     profiles: ['emr']
     environment:
       TZ: ${TZ}
+    logging: *log-config
     volumes:
       #- "${BAHMNI_APPS_PATH:?}/ui/app/:/usr/local/apache2/htdocs/bahmni"
       #- "${BAHMNI_APPS_PATH:?}/ui/node_modules/@bower_components/:/usr/local/apache2/htdocs/bahmni/components"
@@ -118,6 +139,7 @@ services:
       ODOO_DB_SERVER: ${ODOO_DB_SERVER:?}
       ODOO_DB_USERNAME: ${ODOO_DB_USER:?}
       ODOO_DB_PASSWORD: ${ODOO_DB_PASSWORD:?}
+    logging: *log-config
     volumes:
       - '${CONFIG_VOLUME:?}:/etc/bahmni_config/:ro'
       - "bahmni-queued-reports:/home/bahmni/reports"
@@ -130,6 +152,7 @@ services:
     image: mysql:5.6
     restart: unless-stopped
     profiles: ["reports"]
+    logging: *log-config
     environment:
       TZ: ${TZ}
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?}
@@ -143,6 +166,7 @@ services:
      ports:
        - '8099:80'
      profiles: ['emr']
+     logging: *log-config
      volumes:
        - 'bahmni-document-images:/usr/share/nginx/html/document_images'
      environment:
@@ -153,6 +177,7 @@ services:
     image: bahmni/appointments:${APPOINTMENTS_IMAGE_TAG:?}
     restart: unless-stopped
     profiles: ['emr','appointments']
+    logging: *log-config
     environment:
       TZ: ${TZ}
 #    volumes:
@@ -162,6 +187,7 @@ services:
     image: bahmni/implementer-interface:${IMPLEMENTER_INTERFACE_IMAGE_TAG:?}
     restart: unless-stopped
     profiles: ["emr","implementer-interface"]
+    logging: *log-config
     environment:
       TZ: ${TZ}
     #volumes:
@@ -174,6 +200,7 @@ services:
     image: postgres:${POSTGRES_IMAGE_TAG:?}
     restart: unless-stopped
     profiles: ["abdm","hip","hiu","hip-atomfeed"]
+    logging: *log-config
     environment:
       - TZ=${TZ:?}
       - POSTGRES_USER=${HIP_DB_USER:?}
@@ -187,6 +214,7 @@ services:
       image: rabbitmq:${RABBITMQ_IMAGE_TAG:?}
       profiles: ["abdm","hip","hiu"]
       container_name: rabbitmq
+      logging: *log-config
       environment:
         TZ: ${TZ}
       ports:
@@ -196,6 +224,7 @@ services:
       restart: unless-stopped
       profiles: ["abdm","hip"]
       container_name: otp
+      logging: *log-config
       depends_on:
         - db
       environment:
@@ -211,6 +240,7 @@ services:
       restart: unless-stopped
       profiles: ["abdm","hiu"]
       container_name: hiu-db-setup
+      logging: *log-config
       environment:
         - TZ=${TZ}
         - 'JAVA_TOOL_OPTIONS=-Djdbc.url=${HIU_DB_URL:?} -Djdbc.username=${HIU_DB_USER:?} -Djdbc.password=${HIU_DB_PASSWORD:?} -Djdbc.database=${HIU_DB_NAME:?}'
@@ -220,6 +250,7 @@ services:
     image: bahmniindiadistro/hip:${HIP_IMAGE_TAG:?}
     restart: unless-stopped
     profiles: ["abdm","hip"]
+    logging: *log-config
     ports:
       - "8000:80"
     depends_on:
@@ -251,6 +282,7 @@ services:
     restart: unless-stopped
     profiles: ["abdm","hiu"]
     container_name: hiu
+    logging: *log-config
     environment:
       TZ: ${TZ}
       HIU_ID: ${HIU_ID:?}
@@ -293,6 +325,7 @@ services:
     restart: unless-stopped
     profiles: ["abdm","hiu"]
     container_name: hiu-ui
+    logging: *log-config
     environment:
       TZ: ${TZ}
       BACKEND_BASE_URL: ${HIU_BACKEND_BASE_URL:?}
@@ -306,6 +339,7 @@ services:
     container_name: hip-atomfeed-listener
     image: bahmniindiadistro/hip-atomfeed:${HIP_ATOMFEED_IMAGE_TAG:?}
     profiles: ["abdm","hip-atomfeed"]
+    logging: *log-config
     environment:
       TZ: ${TZ}
       DATABASE_URL: ${HIP_ATOMFEED_DB_URL:?}
@@ -325,8 +359,41 @@ services:
     image: bahmniindiadistro/abha-verification:${ABHA_VERIFICATION_IMAGE_TAG:?}
     restart: unless-stopped
     profiles: ["abdm","hip"]
+    logging: *log-config
     environment:
       TZ: ${TZ}
+
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:latest
+    container_name: cadvisor
+    restart: unless-stopped
+    profiles: ["monitoring"]
+    logging: *log-config
+    ports:
+      - "8100:8080"
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+
+  node-exporter:
+    image: prom/node-exporter:latest
+    container_name: node-exporter
+    restart: unless-stopped
+    profiles: ["monitoring"]
+    logging: *log-config
+    ports:
+      - "9100:9100"
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    command:
+      - '--path.procfs=/host/proc'
+      - '--path.rootfs=/rootfs'
+      - '--path.sysfs=/host/sys'
+      - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
 
 volumes:
   openmrs-data:
