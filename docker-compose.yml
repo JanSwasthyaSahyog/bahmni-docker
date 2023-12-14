@@ -438,7 +438,7 @@ services:
     command: "bash /restore_docker_volumes.sh"
     volumes:
         - "${RESTORE_ARTIFACTS_PATH}:/restore-artifacts"
-        - '../backup_restore/restore_docker_volumes.sh:/restore_docker_volumes.sh'
+        - './backup_restore/restore_docker_volumes.sh:/restore_docker_volumes.sh'
         - 'bahmni-patient-images:/mounts/bahmni-patient-images'
         - 'bahmni-document-images:/mounts/bahmni-document-images'
         - 'bahmni-clinical-forms:/mounts/bahmni-clinical-forms'
