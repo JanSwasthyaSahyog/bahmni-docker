@@ -197,6 +197,40 @@ services:
     #  - "${IMPLEMENTER_INTERFACE_CODE_PATH:?}/dist:/usr/local/apache2/htdocs/implementer_interface"
     depends_on:
       - openmrs
+
+  openelis:
+    profiles: ["openelis"]
+    image: 'bahmni/openelis:${OPENELIS_IMAGE_TAG:?[ERROR]}'
+    volumes:
+      - "${CONFIG_VOLUME:?}:/etc/bahmni_config/:ro"
+      - "bahmni-lab-results:/home/bahmni/uploaded_results"
+      - "bahmni-uploaded-files:/home/bahmni/uploaded-files"
+    environment:
+      OPENMRS_HOST: ${OPENMRS_HOST}
+      OPENMRS_PORT: ${OPENMRS_PORT:?}
+      OPENMRS_ATOMFEED_USER: ${OPENMRS_ATOMFEED_USER:?}
+      OPENMRS_ATOMFEED_PASSWORD: ${OPENMRS_ATOMFEED_PASSWORD:?}
+      OPENELIS_DB_SERVER: ${OPENELIS_DB_SERVER}
+    depends_on:
+      openelisdb:
+        condition: service_healthy
+    logging: *log-config
+
+  openelisdb:
+    profiles: ["openelis"]
+    image: '${OPENELIS_DB_IMAGE_NAME:?[ERROR]}'
+    volumes:
+      - 'openelisdbdata:/var/lib/postgresql/data'
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -h localhost -U postgres']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    environment:
+      POSTGRES_USER: ${OPENELIS_DB_USER:?}
+      POSTGRES_PASSWORD: ${OPENELIS_DB_PASSWORD:?}
+      POSTGRES_DB: ${OPENELIS_DB_NAME:?}
+    logging: *log-config
       
   db:
     container_name: db
@@ -428,3 +462,5 @@ volumes:
   bahmni-lab-results:
   bahmni-uploaded-files:
   dcm4chee-archive:
+  openelisdbdata:
+
