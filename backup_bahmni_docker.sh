@@ -2,7 +2,7 @@
 
 BAHMNI_DOCKER_ENV_FILE=.env
 
-source ../backup_restore/backup_utils.sh
+source ./backup_restore/backup_utils.sh
 source ${BAHMNI_DOCKER_ENV_FILE}
 
 # Set the backup folder path
