@@ -61,16 +61,16 @@ backup_db "mysql" $REPORTS_DB_NAME $REPORTS_DB_USERNAME $REPORTS_DB_PASSWORD $re
 # backup_db "postgres" $PACS_INTEGRATION_DB_NAME $PACS_INTEGRATION_DB_USERNAME $PACS_INTEGRATION_DB_PASSWORD $pacs_integration_db_service_name $pacs_integration_db_backup_file_path
 
 log_info "Taking backup for HIP Database"
-restore_db "postgres" $HIP_DB_NAME $HIP_DB_USER $HIP_DB_PASSWORD $abdm_db_service_name $hipservice_db_backup_file_path
+backup_db "postgres" $HIP_DB_NAME $HIP_DB_USER $HIP_DB_PASSWORD $abdm_db_service_name $hipservice_db_backup_file_path
 
 log_info "Taking backup for HIP Atomfeed Database"
-restore_db "postgres" $HIP_ATOMFEED_DB_NAME $HIP_DB_USER $HIP_DB_PASSWORD $abdm_db_service_name $hip_atomfeed_db_backup_file_path
+backup_db "postgres" $HIP_ATOMFEED_DB_NAME $HIP_DB_USER $HIP_DB_PASSWORD $abdm_db_service_name $hip_atomfeed_db_backup_file_path
 
 log_info "Taking backup for HIU Database"
-restore_db "postgres" $HIU_DB_NAME $HIU_DB_USER $HIU_DB_PASSWORD $abdm_db_service_name $hiu_db_backup_file_path
+backup_db "postgres" $HIU_DB_NAME $HIU_DB_USER $HIU_DB_PASSWORD $abdm_db_service_name $hiu_db_backup_file_path
 
 log_info "Taking backup for OTP Database"
-restore_db "postgres" $OTP_DB_NAME $OTP_DB_USER $OTP_DB_PASSWORD $abdm_db_service_name $otpservice_db_backup_file_path
+backup_db "postgres" $OTP_DB_NAME $OTP_DB_USER $OTP_DB_PASSWORD $abdm_db_service_name $otpservice_db_backup_file_path
 
 log_info "Taking backup for Patient-Documents"
 backup_container_file_system $openmrs_service_name "/home/bahmni/document_images" "$BACKUP_ROOT_FOLDER"
