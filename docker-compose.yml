@@ -406,6 +406,9 @@ services:
     restart: unless-stopped
     profiles: ["monitoring"]
     logging: *log-config
+    command:
+      - '-housekeeping_interval=10s'
+      - '-docker_only=true'
     ports:
       - "8100:8080"
     volumes:
