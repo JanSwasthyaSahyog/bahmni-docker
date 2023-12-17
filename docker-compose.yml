@@ -404,7 +404,7 @@ services:
     image: gcr.io/cadvisor/cadvisor:${CADVISOR_IMAGE_TAG:?}
     container_name: cadvisor
     restart: unless-stopped
-    profiles: ["monitoring"]
+    profiles: ["monitoring-metrics"]
     logging: *log-config
     command:
       - '-housekeeping_interval=10s'
@@ -421,7 +421,7 @@ services:
     image: prom/node-exporter:${NODE_EXPORTER_IMAGE_TAG:?}
     container_name: node-exporter
     restart: unless-stopped
-    profiles: ["monitoring"]
+    profiles: ["monitoring-metrics"]
     logging: *log-config
     ports:
       - "9100:9100"
