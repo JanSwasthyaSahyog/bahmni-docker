@@ -25,10 +25,10 @@ odoo_db_backup_file_path=$backup_subfolder_path/odoodb_backup.sql
 dcm4chee_db_backup_file_path=$backup_subfolder_path/dcm4cheedb_backup.sql
 pacs_integration_db_backup_file_path=$backup_subfolder_path/pacs_integrationdb_backup.sql
 
-hipservice_db_backup_file_path="${RESTORE_ARTIFACTS_PATH}/hipservicedb_backup.sql"
-hip_atomfeed_db_backup_file_path="${RESTORE_ARTIFACTS_PATH}/hip_atomfeeddb_backup.sql"
-hiu_db_backup_file_path="${RESTORE_ARTIFACTS_PATH}/hiudb_backup.sql"
-otpservice_db_backup_file_path="${RESTORE_ARTIFACTS_PATH}/otpservicedb_backup.sql"
+hipservice_db_backup_file_path="$backup_subfolder_path/hipservicedb_backup.sql"
+hip_atomfeed_db_backup_file_path="$backup_subfolder_path/hip_atomfeeddb_backup.sql"
+hiu_db_backup_file_path="$backup_subfolder_path/hiudb_backup.sql"
+otpservice_db_backup_file_path="$backup_subfolder_path/otpservicedb_backup.sql"
 
 
 openmrs_service_name="openmrs"
