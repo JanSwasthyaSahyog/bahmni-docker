@@ -17,7 +17,7 @@ function log_info() {
 
 function is_compose_container_running() {
     local service_name=$1
-    if [ -z $(docker compose ps -q $service_name) ] || [ -z $(docker ps -q --no-trunc | grep $(docker compose ps -q $service_name)) ]; then
+    if [ -z $(docker compose --env-file ${BAHMNI_DOCKER_ENV_FILE} ps -q $service_name) ] || [ -z $(docker ps -q --no-trunc | grep $(docker compose --env-file ${BAHMNI_DOCKER_ENV_FILE} ps -q $service_name)) ]; then
         echo 0
     else
         echo 1
@@ -26,7 +26,7 @@ function is_compose_container_running() {
 
 function is_compose_container_present() {
     local service_name=$1
-    if [ -z $(docker compose ps -a -q $service_name) ]; then
+    if [ -z $(docker compose --env-file ${BAHMNI_DOCKER_ENV_FILE} ps -a -q $service_name) ]; then
         echo 0
     else
         echo 1
@@ -57,7 +57,7 @@ function backup_container_file_system() {
     local container_file_path=$2
     local backup_file_path=$3
     if [[ $(is_compose_container_present $service_name) -eq 1 ]]; then
-        docker compose cp -a "$service_name:$container_file_path" "$backup_file_path"
+        docker compose --env-file ${BAHMNI_DOCKER_ENV_FILE} cp -a "$service_name:$container_file_path" "$backup_file_path"
     else
         log_error "Unable to backup for $container_file_path files as $service_name container is not created"
     fi
