@@ -207,6 +207,7 @@ services:
       - "bahmni-lab-results:/home/bahmni/uploaded_results"
       - "bahmni-uploaded-files:/home/bahmni/uploaded-files"
     environment:
+      TZ: ${TZ}
       OPENMRS_HOST: ${OPENMRS_HOST}
       OPENMRS_PORT: ${OPENMRS_PORT:?}
       OPENMRS_ATOMFEED_USER: ${OPENMRS_ATOMFEED_USER:?}
@@ -228,6 +229,7 @@ services:
       timeout: 5s
       retries: 5
     environment:
+      TZ: ${TZ}
       POSTGRES_USER: ${OPENELIS_DB_USER:?}
       POSTGRES_PASSWORD: ${OPENELIS_DB_PASSWORD:?}
       POSTGRES_DB: ${OPENELIS_DB_NAME:?}
@@ -237,6 +239,7 @@ services:
     image: bahmni/dcm4chee:${DCM4CHEE_IMAGE_TAG:?}
     profiles: ["pacs"]
     environment:
+      TZ: ${TZ}
       DB_HOST: ${PACS_DB_HOST:?}
       DB_PORT: ${PACS_DB_PORT:?}
       DB_NAME: ${DCM4CHEE_DB_NAME:?}
@@ -253,6 +256,7 @@ services:
     image: bahmni/pacs-integration:${PACS_INTEGRATION_IMAGE_TAG:?}
     profiles: ["pacs"]
     environment:
+      TZ: ${TZ}
       DB_HOST: ${PACS_DB_HOST:?}
       DB_PORT: ${PACS_DB_PORT:?}
       DB_NAME: ${PACS_INTEGRATION_DB_NAME:?}
@@ -268,6 +272,7 @@ services:
     image: ${PACS_DB_IMAGE_NAME:?}
     profiles: ["pacs"]
     environment:
+      TZ: ${TZ}
       POSTGRES_PASSWORD: ${PACS_DB_ROOT_PASSWORD}
       DCM4CHEE_DB_NAME: ${DCM4CHEE_DB_NAME:?}
       DCM4CHEE_DB_USERNAME: ${DCM4CHEE_DB_USERNAME:?}
@@ -348,6 +353,7 @@ services:
       Gateway:clientSecret: ${ABDM_GATEWAY_CLIENT_SECRET:?}
       Gateway:clientId: ${ABDM_GATEWAY_CLIENT_ID:?}
       Gateway:url: ${ABDM_GATEWAY_URL:?}
+      Gateway:abhaNumberServiceUrl: ${ABHA_NUMBER_SERVICE_URL:?}
       OpenMrs:url: ${OPENMRS_URL:?}
       OpenMrs:password: ${OPENMRS_PASSWORD:?}
       OpenMrs:phoneNumber: ${PHONE_NUMBER:?}
@@ -455,6 +461,8 @@ services:
     restart: unless-stopped
     profiles: ["monitoring-metrics"]
     logging: *log-config
+    environment:
+      TZ: ${TZ}
     command:
       - '-housekeeping_interval=10s'
       - '-docker_only=true'
@@ -472,6 +480,8 @@ services:
     restart: unless-stopped
     profiles: ["monitoring-metrics"]
     logging: *log-config
+    environment:
+      TZ: ${TZ}
     ports:
       - "9100:9100"
     volumes:
@@ -488,6 +498,8 @@ services:
     image: bash:5.2.15
     profiles: ["restore"]
     command: "bash /restore_docker_volumes.sh"
+    environment:
+      TZ: ${TZ}
     volumes:
         - "${RESTORE_ARTIFACTS_PATH}:/restore-artifacts"
         - './backup_restore/restore_docker_volumes.sh:/restore_docker_volumes.sh'
