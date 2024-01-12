@@ -105,7 +105,6 @@ services:
     logging: *log-config
     volumes:
       - 'openmrsdbdata:/var/lib/mysql'
-      - '/etc/bahmni-upgrade/openmrsdump/:/docker-entrypoint-initdb.d/'
       - 'configuration_checksums:/configuration_checksums'
 
   bahmni-web:
