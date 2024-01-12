@@ -53,9 +53,9 @@ restore_db "postgres" "clinlims" $OPENELIS_DB_USER $OPENELIS_DB_PASSWORD $openel
 
 #restore_db "postgres" $ODOO_DB_NAME $ODOO_DB_USER $ODOO_DB_PASSWORD $odoo_db_service_name $odoo_db_backup_file_path
 
-#restore_db "postgres" $DCM4CHEE_DB_NAME $DCM4CHEE_DB_USERNAME $DCM4CHEE_DB_PASSWORD $dcm4chee_db_service_name $dcm4chee_db_backup_file_path
+restore_db "postgres" $DCM4CHEE_DB_NAME $DCM4CHEE_DB_USERNAME $DCM4CHEE_DB_PASSWORD $dcm4chee_db_service_name $dcm4chee_db_backup_file_path
 
-#restore_db "postgres" $PACS_INTEGRATION_DB_NAME $PACS_INTEGRATION_DB_USERNAME $PACS_INTEGRATION_DB_PASSWORD $pacs_integration_db_service_name $pacs_integration_db_backup_file_path
+restore_db "postgres" $PACS_INTEGRATION_DB_NAME $PACS_INTEGRATION_DB_USERNAME $PACS_INTEGRATION_DB_PASSWORD $pacs_integration_db_service_name $pacs_integration_db_backup_file_path
 
 restore_db "postgres" $HIP_DB_NAME $HIP_DB_USER $HIP_DB_PASSWORD $abdm_db_service_name $hipservice_db_backup_file_path
 
