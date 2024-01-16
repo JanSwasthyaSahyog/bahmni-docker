@@ -247,8 +247,10 @@ services:
     ports:
       - '8055:8055'
       - '11112:11112'
+      - '104:104'
     volumes:
       - 'dcm4chee-archive:/var/lib/bahmni/dcm4chee/server/default/archive'
+      - 'dcm4chee-config:/var/lib/bahmni/dcm4chee/server/default/data/xmbean-attrs'
     logging: *log-config
 
   pacs-integration:
@@ -527,4 +529,5 @@ volumes:
   dcm4chee-archive:
   openelisdbdata:
   pacsdbdata:
+  dcm4chee-config:
 
