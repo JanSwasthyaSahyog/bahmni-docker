@@ -23,8 +23,8 @@ services:
     environment:
       TZ: ${TZ}
     logging: *log-config
-    #volumes:
-    #   - ${CERTIFICATE_PATH}:/etc/tls
+    volumes:
+      - ${CERTIFICATE_PATH}:/etc/tls
 
     ports:
       - "80:80"
