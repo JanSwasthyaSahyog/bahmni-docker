@@ -38,7 +38,7 @@ function copy_from_restore_to_mount(){
   if is_directory_exists "$source" && ! is_directory_empty "$source" ; then
     if is_directory_empty "$destination"; then
       log_info "Copying $source to $destination"
-      cp -r "$source"/* "$destination"
+      find $source -exec cp -r {} $destination \;
     else
       log_warning "Destination volume mount $volume_mount_name is not empty. So skipping restore for $artifact_name into $volume_mount_name."
     fi
