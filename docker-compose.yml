@@ -250,7 +250,7 @@ services:
       - '11112:11112'
       - '104:104'
     volumes:
-      - 'dcm4chee-archive:/var/lib/bahmni/dcm4chee/server/default/archive'
+      - '/pacs-images:/var/lib/bahmni/dcm4chee/server/default/archive'
       - 'dcm4chee-config:/var/lib/bahmni/dcm4chee/server/default/data/xmbean-attrs'
     logging: *log-config
 
@@ -504,7 +504,7 @@ services:
         - 'bahmni-lab-results:/mounts/bahmni-lab-results'
         - 'bahmni-queued-reports:/mounts/bahmni-queued-reports'
         - 'bahmni-uploaded-files:/mounts/bahmni-uploaded-files'
-        - 'dcm4chee-archive:/mounts/dcm4chee-archive'
+        #- 'dcm4chee-archive:/mounts/dcm4chee-archive'
         - 'configuration_checksums:/mounts/configuration_checksums'
 
 volumes:

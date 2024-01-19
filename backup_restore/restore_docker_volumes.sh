@@ -55,6 +55,6 @@ copy_from_restore_to_mount /restore-artifacts/configuration_checksums /mounts/co
 copy_from_restore_to_mount /restore-artifacts/uploaded_results /mounts/bahmni-lab-results
 copy_from_restore_to_mount /restore-artifacts/reports /mounts/bahmni-queued-reports
 copy_from_restore_to_mount /restore-artifacts/uploaded-files /mounts/bahmni-uploaded-files
-copy_from_restore_to_mount /restore-artifacts/dcm4chee_archive /mounts/dcm4chee-archive
+#copy_from_restore_to_mount /restore-artifacts/dcm4chee_archive /mounts/dcm4chee-archive
 
 log_info -e "File System Restore completed."
