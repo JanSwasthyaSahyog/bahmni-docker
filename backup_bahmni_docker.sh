@@ -96,3 +96,4 @@ backup_container_file_system $reports_service_name "/home/bahmni/reports" "$BACK
 # log_info "Taking backup for DCM4CHEE Archive"
 # backup_container_file_system $dcm4chee_service_name "/var/lib/bahmni/dcm4chee/server/default/archive/." "$BACKUP_ROOT_FOLDER/dcm4chee_archive"
 
+echo "Backup completed at $(date)"

@@ -46,6 +46,7 @@ function backup_db() {
         elif [[ $db_type == "postgres" ]]; then
             docker compose --env-file ${BAHMNI_DOCKER_ENV_FILE} exec $db_service_name pg_dump -U $db_username -d $db_name -F p -b -v >"$backup_file_path"
         fi
+        gzip "$backup_file_path"
     else
         log_error "Unable to backup for $db_name database as $db_service_name container is not running"
     fi
