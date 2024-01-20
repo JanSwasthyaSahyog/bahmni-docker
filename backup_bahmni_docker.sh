@@ -12,10 +12,10 @@ BACKUP_ROOT_FOLDER="./backup-artifacts"
 datetime=$(date +'%Y-%m-%d_%H-%M-%S')
 
 # Create the backup folder with the current datetime
-backup_subfolder_path="$BACKUP_ROOT_FOLDER/$datetime"
+backup_subfolder_path="$BACKUP_ROOT_FOLDER/database/$datetime"
 mkdir -p "$backup_subfolder_path"
 
-log_info "Saving backup to $backup_subfolder_path..."
+log_info "Saving database backup to $backup_subfolder_path..."
 
 
 openmrs_db_backup_file_path=$backup_subfolder_path/openmrsdb_backup.sql
