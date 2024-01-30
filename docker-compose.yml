@@ -232,6 +232,8 @@ services:
       POSTGRES_USER: ${OPENELIS_DB_USER:?}
       POSTGRES_PASSWORD: ${OPENELIS_DB_PASSWORD:?}
       POSTGRES_DB: ${OPENELIS_DB_NAME:?}
+    ports:
+      - '5433:5432'
     logging: *log-config
 
   dcm4chee:
