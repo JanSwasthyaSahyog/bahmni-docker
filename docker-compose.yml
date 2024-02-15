@@ -573,6 +573,8 @@ services:
 volumes:
   openmrs-data:
   openmrsdbdata:
+  odoodbdata:
+  odooappdata:
   bahmni-patient-images:
   bahmni-document-images:
   postgresql:
