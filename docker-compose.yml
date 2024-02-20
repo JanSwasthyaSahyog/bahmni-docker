@@ -294,6 +294,7 @@ services:
   odoo:
     profiles: ["odoo"]
     image: 'bahmni/odoo-16:${ODOO_IMAGE_TAG:?[ERROR]}'
+    restart: unless-stopped
     ports:
       - '8069:8069'
     volumes:
@@ -312,6 +313,7 @@ services:
   odoodb:
     profiles: ["odoo"]
     image: ${ODOO_DB_IMAGE_NAME:?}
+    restart: unless-stopped
     healthcheck:
       test: ['CMD-SHELL', 'pg_isready -h localhost -U odoo']
       interval: 10s
@@ -328,6 +330,7 @@ services:
   odoo-connect:
     profiles: ["odoo"]
     image: 'bahmni/odoo-connect:${ODOO_CONNECT_IMAGE_TAG:?[ERROR]}'
+    restart: unless-stopped
     environment:
       IS_ODOO_16: true
       LOGGING_LEVEL: ${ODOO_CONNECT_LOG_LEVEL:?}
