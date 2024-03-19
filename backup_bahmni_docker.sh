@@ -46,10 +46,10 @@ pacs_integration_db_service_name="pacsdb"
 abdm_db_service_name="db"
 
 log_info "Taking backup for OpenMRS Database"
-backup_db "mysql" $OPENMRS_DB_NAME $OPENMRS_DB_USERNAME $OPENMRS_DB_PASSWORD $openmrs_db_service_name $openmrs_db_backup_file_path
+backup_db "mysql" root $MYSQL_ROOT_PASSWORD $OPENMRS_DB_PASSWORD $openmrs_db_service_name $openmrs_db_backup_file_path
 
 log_info "Taking backup for Reports Database"
-backup_db "mysql" $REPORTS_DB_NAME $REPORTS_DB_USERNAME $REPORTS_DB_PASSWORD $reports_db_service_name $reports_db_backup_file_path
+backup_db "mysql" root $MYSQL_ROOT_PASSWORD $REPORTS_DB_PASSWORD $reports_db_service_name $reports_db_backup_file_path
 
 log_info "Taking backup for OpenELIS Database"
 backup_db "postgres" "clinlims" $OPENELIS_DB_USER $OPENELIS_DB_PASSWORD $openelis_db_service_name $openelis_db_backup_file_path
