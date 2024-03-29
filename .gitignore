@@ -11,3 +11,4 @@
 # Environments Files
 .env.test
 .env.prod
+backup-artifacts/
