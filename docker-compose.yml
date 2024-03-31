@@ -291,6 +291,70 @@ services:
       - 'pacsdbdata:/var/lib/postgresql/data'
     logging: *log-config
 
+  odoo:
+    profiles: ["odoo"]
+    image: 'bahmni/odoo-16:${ODOO_IMAGE_TAG:?[ERROR]}'
+    restart: unless-stopped
+    ports:
+      - '8069:8069'
+    volumes:
+      - odooappdata:/var/lib/odoo
+      - ${EXTRA_ADDONS_PATH}:/mnt/extra-addons
+    depends_on:
+      odoodb:
+        condition: service_healthy
+    environment:
+      HOST: ${ODOO_DB_SERVER}
+      USER: ${ODOO_DB_USER}
+      PASSWORD: ${ODOO_DB_PASSWORD}
+      TZ: ${TZ}
+    logging: *log-config
+
+  odoodb:
+    profiles: ["odoo"]
+    image: ${ODOO_DB_IMAGE_NAME:?}
+    restart: unless-stopped
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -h localhost -U odoo']
+      interval: 10s
+      timeout: 5s
+    environment:
+      POSTGRES_DB: ${ODOO_DB_NAME}
+      POSTGRES_USER: ${ODOO_DB_USER}
+      POSTGRES_PASSWORD: ${ODOO_DB_PASSWORD}
+      TZ: ${TZ}
+    volumes:
+      - 'odoodbdata:/var/lib/postgresql/data'
+    logging: *log-config
+
+  odoo-connect:
+    profiles: ["odoo"]
+    image: 'bahmni/odoo-connect:${ODOO_CONNECT_IMAGE_TAG:?[ERROR]}'
+    restart: unless-stopped
+    environment:
+      IS_ODOO_16: true
+      LOGGING_LEVEL: ${ODOO_CONNECT_LOG_LEVEL:?}
+      ODOO_DB_SERVER: ${ODOO_DB_SERVER:?}
+      ODOO_DB_USERNAME: ${ODOO_DB_USER:?}
+      ODOO_DB_PASSWORD: ${ODOO_DB_PASSWORD:?}
+      OPENMRS_HOST: ${OPENMRS_HOST:?}
+      OPENMRS_PORT: ${OPENMRS_PORT:?}
+      OPENMRS_ATOMFEED_USER: ${OPENMRS_ATOMFEED_USER:?}
+      OPENMRS_ATOMFEED_PASSWORD: ${OPENMRS_ATOMFEED_PASSWORD:?}
+      OPENELIS_HOST: ${OPENELIS_HOST:?}
+      OPENELIS_PORT: ${OPENELIS_PORT:?}
+      OPENELIS_ATOMFEED_USER: ${OPENELIS_ATOMFEED_USER:?}
+      OPENELIS_ATOMFEED_PASSWORD: ${OPENELIS_ATOMFEED_PASSWORD:?}
+      ODOO_HOST: ${ODOO_HOST:?}
+      ODOO_PORT: ${ODOO_PORT:?}
+      ODOO_ATOMFEED_USER: ${ODOO_ATOMFEED_USER:?}
+      ODOO_ATOMFEED_PASSWORD: ${ODOO_ATOMFEED_PASSWORD:?}
+      TZ: ${TZ}
+    depends_on:
+      odoodb:
+        condition: service_healthy
+    logging: *log-config
+
       
   db:
     container_name: db
@@ -506,12 +570,15 @@ services:
         - 'bahmni-lab-results:/mounts/bahmni-lab-results'
         - 'bahmni-queued-reports:/mounts/bahmni-queued-reports'
         - 'bahmni-uploaded-files:/mounts/bahmni-uploaded-files'
+        - 'odooappdata:/mounts/odoo-files'
         #- 'dcm4chee-archive:/mounts/dcm4chee-archive'
         - 'configuration_checksums:/mounts/configuration_checksums'
 
 volumes:
   openmrs-data:
   openmrsdbdata:
+  odoodbdata:
+  odooappdata:
   bahmni-patient-images:
   bahmni-document-images:
   postgresql:
