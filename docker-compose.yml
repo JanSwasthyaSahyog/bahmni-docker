@@ -101,7 +101,7 @@ services:
       MYSQL_USER: ${OPENMRS_DB_USERNAME:?}
       MYSQL_PASSWORD: ${OPENMRS_DB_PASSWORD:?}
     ports:
-      - '3306:3306'
+      - '127.0.0.1:3306:3306'
     logging: *log-config
     volumes:
       - 'openmrsdbdata:/var/lib/mysql'
@@ -233,7 +233,7 @@ services:
       POSTGRES_PASSWORD: ${OPENELIS_DB_PASSWORD:?}
       POSTGRES_DB: ${OPENELIS_DB_NAME:?}
     ports:
-      - '5433:5432'
+      - '127.0.0.1:5433:5432'
     logging: *log-config
 
   dcm4chee:
@@ -248,7 +248,7 @@ services:
       DB_USERNAME: ${DCM4CHEE_DB_USERNAME:?}
       DB_PASSWORD: ${DCM4CHEE_DB_PASSWORD:?}
     ports:
-      - '8055:8055'
+      - '127.0.0.1:8055:8055'
       - '11112:11112'
       - '104:104'
     volumes:
@@ -325,6 +325,8 @@ services:
       TZ: ${TZ}
     volumes:
       - 'odoodbdata:/var/lib/postgresql/data'
+    ports:
+      - '127.0.0.1:5434:5432'
     logging: *log-config
 
   odoo-connect:
