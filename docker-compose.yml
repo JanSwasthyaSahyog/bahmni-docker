@@ -73,6 +73,7 @@ services:
       LOCATION: ${LOCATION:?}
       PHONE_NUMBER: ${PHONE_NUMBER:?}
       LAB_ORDER_TYPE_ID: "3"
+      DOCUMENT_MAX_SIZE_MB: ${OPENMRS_DOCUMENT_MAX_SIZE_MB}
     ports:
       - '8080:8080'
     logging: *log-config
