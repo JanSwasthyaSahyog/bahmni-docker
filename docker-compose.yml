@@ -107,7 +107,7 @@ services:
     volumes:
       - './mysql_conf/openmrs_master.cnf:/etc/mysql/conf.d/openmrs_master.cnf'
       - 'openmrsdbdata:/var/lib/mysql'
-      - 'openmrsdbbinarylogs:/var/log/mysql/binlogs'
+      - 'openmrsdbbinarylogs:/var/log/mysql/'
       - 'configuration_checksums:/configuration_checksums'
 
   bahmni-web:
