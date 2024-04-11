@@ -102,7 +102,7 @@ services:
       MYSQL_USER: ${OPENMRS_DB_USERNAME:?}
       MYSQL_PASSWORD: ${OPENMRS_DB_PASSWORD:?}
     ports:
-      - '127.0.0.1:3306:3306'
+      - '43307:3306'
     logging: *log-config
     volumes:
       - './mysql_conf/openmrs_master.cnf:/etc/mysql/conf.d/openmrs_master.cnf'
@@ -236,7 +236,7 @@ services:
       POSTGRES_PASSWORD: ${OPENELIS_DB_PASSWORD:?}
       POSTGRES_DB: ${OPENELIS_DB_NAME:?}
     ports:
-      - '127.0.0.1:5433:5432'
+      - '45433:5432'
     logging: *log-config
 
   dcm4chee:
@@ -289,6 +289,8 @@ services:
       PACS_INTEGRATION_DB_NAME: ${PACS_INTEGRATION_DB_NAME:?}
       PACS_INTEGRATION_DB_USERNAME: ${PACS_INTEGRATION_DB_USERNAME:?}
       PACS_INTEGRATION_DB_PASSWORD: ${PACS_INTEGRATION_DB_PASSWORD:?}
+    ports:
+      - '45434:5432'
     volumes:
       - '${PWD}/init_pacs_dbs.sh:/docker-entrypoint-initdb.d/init_pacs_dbs.sh'
       - 'pacsdbdata:/var/lib/postgresql/data'
@@ -329,7 +331,7 @@ services:
     volumes:
       - 'odoodbdata:/var/lib/postgresql/data'
     ports:
-      - '127.0.0.1:5434:5432'
+      - '45435:5432'
     logging: *log-config
 
   odoo-connect:
@@ -445,6 +447,8 @@ services:
       - TZ=${TZ:?}
       - POSTGRES_USER=${HIP_DB_USER:?}
       - POSTGRES_PASSWORD=${HIP_DB_PASSWORD:?}
+    ports:
+      - '45436:5432'
     volumes:
       - postgresql:/var/lib/postgresql
       - postgresql_data:/var/lib/postgresql/data
