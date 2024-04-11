@@ -1,0 +1,5 @@
+server_id               = 1
+log_bin                 = /var/log/mysql/binlogs/mysql-bin.log
+max_binlog_size         = 100M
+binlog_format           = mixed
+expire_logs_days        = 7

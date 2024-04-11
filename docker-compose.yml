@@ -105,7 +105,9 @@ services:
       - '127.0.0.1:3306:3306'
     logging: *log-config
     volumes:
+      - './mysql_conf/openmrs_master.cnf:/etc/mysql/conf.d/openmrs_master.cnf'
       - 'openmrsdbdata:/var/lib/mysql'
+      - 'openmrsdbbinarylogs:/var/log/mysql/binlogs'
       - 'configuration_checksums:/configuration_checksums'
 
   bahmni-web:
@@ -672,4 +674,5 @@ volumes:
   dcm4chee-config:
   metabase-data:
   mart-data:
+  openmrsdbbinarylogs:
 
