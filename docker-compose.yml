@@ -375,6 +375,7 @@ services:
       POSTGRES_PASSWORD: ${METABASE_DB_PASSWORD:?}
     volumes:
       - 'metabase-data:/var/lib/postgresql/data'
+    logging: *log-config
 
 
   metabase:
@@ -402,6 +403,7 @@ services:
       MART_DB_PASSWORD: ${MART_DB_PASSWORD:?}
     depends_on:
      - metabasedb
+    logging: *log-config
 
   martdb:
     image: postgres:${BAHMNI_MART_DB_IMAGE_TAG:?}
@@ -414,6 +416,7 @@ services:
       POSTGRES_PASSWORD: ${MART_DB_PASSWORD:?}
     volumes:
       - 'mart-data:/var/lib/postgresql/data'
+    logging: *log-config
 
 
   mart:
@@ -435,6 +438,7 @@ services:
      - martdb
     volumes:
      - 'bahmni-clinical-forms:/home/bahmni/clinical_forms'
+    logging: *log-config
 
       
   db:
