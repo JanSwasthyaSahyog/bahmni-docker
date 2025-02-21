@@ -300,6 +300,7 @@ services:
     profiles: ["odoo"]
     image: 'bahmni/odoo-16:${ODOO_IMAGE_TAG:?[ERROR]}'
     restart: unless-stopped
+    command: "odoo -u all -d odoo"
     ports:
       - '8069:8069'
     volumes:
