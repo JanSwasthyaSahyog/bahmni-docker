@@ -642,6 +642,20 @@ services:
       - '--path.rootfs=/rootfs'
       - '--path.sysfs=/host/sys'
       - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
+  mysqld-exporter:
+    image: prom/mysqld-exporter:${MYSQLD_EXPORTER_IMAGE_TAG:?}
+    profiles:
+      - "mysql-monitoring"
+    container_name: mysqld-exporter
+    ports:
+      - "49104:9104"
+    environment:
+      - MYSQLD_EXPORTER_PASSWORD=${OPENMRS_MYSQL_MONITORING_PASSWORD}
+    command:
+      - "--mysqld.username=${OPENMRS_MYSQL_MONITORING_USERNAME}"
+      - "--mysqld.address=openmrsdb:3306"
+      - "--collect.slave_status"
+    restart: unless-stopped
 
   restore_volumes:
     image: bash:5.2.15
